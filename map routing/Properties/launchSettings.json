@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "map routing": {
+      "commandName": "Project",
+      "commandLineArgs": "map1.txt queries1.txt output1.txt\nmap2.txt queries2.txt output2.txt\nmap3.txt queries3.txt output3.txt\nmap4.txt queries4.txt output4.txt\nmap5.txt queries5.txt output5.txt\nOLMap.txt OLQueries.txt OLoutput.txt\nSFMap.txt SFQueries.txt SFoutput.txt"
+    }
+  }
+}
