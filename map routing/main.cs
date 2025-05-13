@@ -5,6 +5,7 @@ using map_routing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,6 +55,53 @@ namespace map_routing
                 }
                 writer.WriteLine($"{swCompute.ElapsedMilliseconds} ms");
                 writer.WriteLine($"{swAll.ElapsedMilliseconds} ms");
+
+
+                if (results.Length > 0 && queries.Count > 0)
+                {
+                    try
+                    {
+                        var firstQuery = queries[0];
+                        var firstResult = results[0];
+
+                        var bitmap = MapVisualizer.VisualizePath(
+                            firstQuery.Item1,
+                            firstQuery.Item2,
+                            IdToCoor,
+                            edges,
+                            firstResult.Path
+                        );
+
+                        string visualizationPath = Path.Combine(
+                            Path.GetDirectoryName(outputPath),
+                            Path.GetFileNameWithoutExtension(outputPath) + "_visualization.png"
+                        );
+
+                        bitmap.Save(visualizationPath, ImageFormat.Png);
+                        Console.WriteLine($"Visualization saved to: {visualizationPath}");
+
+                        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                        {
+                            try
+                            {
+                                Process.Start(new ProcessStartInfo
+                                {
+                                    FileName = visualizationPath,
+                                    UseShellExecute = true
+                                });
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Could not open visualization: {ex.Message}");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Visualization failed: {ex.Message}");
+                    }
+                }
+
             }
         }
     }
